@@ -1,20 +1,9 @@
+import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import { useEffect, useState } from "react";
-import AuthContext from "./AuthContext";
-
-import {
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  sendPasswordResetEmail,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-  updateProfile,
-} from "firebase/auth";
-import auth from "../firebase/firebase.config";
+import auth from '../firebase/firebase.config';
 
 import axios from "axios";
-
+import AuthContext from "./AuthContext";
 // eslint-disable-next-line react/prop-types
 const AuthProvider = ({ children }) => {
   const googleProvider = new GoogleAuthProvider();
@@ -29,7 +18,7 @@ const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  const googleSignIn = () => {
+  const signInWithGoogle = () => {
     return signInWithPopup(auth, googleProvider);
   };
   const updateUserProfile = (name, photo) => {
@@ -51,6 +40,7 @@ const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       setLoader(false);
+      console.log(currentUser);
       if (currentUser?.email) {
         await axios.post(
           `${import.meta.env.VITE_API_URL}/jwt`,
@@ -76,7 +66,7 @@ const AuthProvider = ({ children }) => {
     user,
     createUser,
     signIn,
-    googleSignIn,
+    signInWithGoogle,
     updateUserProfile,
     logOut,
     sendResetPassword,
