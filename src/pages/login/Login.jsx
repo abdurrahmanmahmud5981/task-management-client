@@ -72,8 +72,9 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-tr from-indigo-50 via-purple-50 to-blue-50 ">
-      <div className="w-full max-w-md relative">
+      <div className="w-full max-w-xl relative py-20">
         <Card className="shadow-xl border border-gray-200">
+          
           <CardHeader className="h-56 w-full bg-gradient-to-br from-blue-600 to-indigo-600 m-0 grid place-items-center shadow-lg rounded-b-none text-white">
             <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-md mb-2">
               <FaRegUser className="text-blue-600 text-4xl" />
@@ -81,19 +82,21 @@ const Login = () => {
             <Typography color="white" className="font-bold text-3xl">
               Task Master
             </Typography>
+            
+            <Typography
+           
+              color="blue-gray"
+              className="text-center font-semibold text-lg"
+            >
+              Welcome Back
+            </Typography>
             <Typography color="white" className=" opacity-80">
               Your personal productivity hub
             </Typography>
           </CardHeader>
 
           <CardBody className="flex flex-col gap-5 px-8 pt-8">
-            <Typography
-              variant="h5"
-              color="blue-gray"
-              className="text-center font-semibold"
-            >
-              Welcome Back
-            </Typography>
+            
 
             {authError && (
               <div className="bg-red-50 text-red-700 p-3 rounded-lg text-sm mb-2 border border-red-100 flex items-center">

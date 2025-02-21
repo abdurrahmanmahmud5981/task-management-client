@@ -11,16 +11,18 @@ import {
 import { FcGoogle } from 'react-icons/fc';
 import { HiOutlineMail } from 'react-icons/hi';
 import { RiLockPasswordLine } from 'react-icons/ri';
-import { FaRegUser } from 'react-icons/fa';
+import { FaRegUser, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { BsPersonPlus } from 'react-icons/bs';
+import { MdAddAPhoto } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 
 const Register = () => {
-  const { signInWithGoogle, signIn } = useAuth();
+  const { signInWithGoogle, createUser, updateUserProfile } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [authError, setAuthError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   
   const { 
     register, 
@@ -32,23 +34,27 @@ const Register = () => {
       fullName: '',
       email: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      profileImageUrl: ''
     }
   });
 
   const password = watch("password");
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const onSubmit = async (data) => {
     setIsLoading(true);
     setAuthError('');
     
     try {
-      // This would be replaced with your actual Firebase authentication
-      // await createUserWithEmailAndPassword(auth, data.email, data.password);
-      // await updateProfile(auth.currentUser, { displayName: data.fullName });
-      console.log("Registered with email:", data.email, "and name:", data.fullName);
+      await createUser(data.email, data.password);
+      await updateUserProfile(data.fullName, data.profileImageUrl);
+      console.log("Registered with email:", data.email, "name:", data.fullName, "profile image:", data.profileImageUrl);
       setIsLoading(false);
-      // Navigate to dashboard or home page
+      navigate('/');
     } catch (err) {
       setAuthError('Failed to register. This email may already be in use.');
       setIsLoading(false);
@@ -60,13 +66,10 @@ const Register = () => {
     setAuthError('');
     
     try {
-      // This would be replaced with your actual Firebase authentication
-      // await signInWithPopup(auth, googleProvider);
       console.log("Registered with Google");
       const user = await signInWithGoogle();
       console.log(user);
       setIsLoading(false);
-      // Navigate to dashboard or home page
       navigate('/');
     } catch (err) {
       setAuthError('Failed to register with Google.');
@@ -76,7 +79,7 @@ const Register = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-tr from-indigo-50 via-purple-50 to-blue-50">
-      <div className="w-full max-w-lg relative">
+      <div className="w-full max-w-xl relative py-20">
         
         <Card className="shadow-xl border border-gray-200">
           <CardHeader
@@ -95,7 +98,6 @@ const Register = () => {
 
           <CardBody className="flex flex-col gap-5 px-8 pt-8">
            
-            
             {authError && (
               <div className="bg-red-50 text-red-700 p-3 rounded-lg text-sm mb-2 border border-red-100 flex items-center">
                 <span className="bg-red-100 p-1 rounded-full mr-2">
@@ -153,14 +155,39 @@ const Register = () => {
                   <p className="text-red-500 text-xs mt-1 ml-1">{errors.email.message}</p>
                 )}
               </div>
+
+              {/* Profile Image URL Field */}
+              <div>
+                <div className="relative flex items-center">
+                  <div className="absolute left-3 text-gray-500">
+                    <MdAddAPhoto className="w-5 h-5" />
+                  </div>
+                  <input
+                    type="url"
+                    className={`w-full px-10 py-3 rounded-lg border ${errors.profileImageUrl ? 'border-red-300 bg-red-50' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-gray-700`}
+                    placeholder="Profile Image URL (optional)"
+                    {...register("profileImageUrl", { 
+                      required: "Profile Image is required",
+                      pattern: {
+                        value: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
+                        message: "Invalid URL format"
+                      }
+                    })}
+                  />
+                </div>
+                {errors.profileImageUrl && (
+                  <p className="text-red-500 text-xs mt-1 ml-1">{errors.profileImageUrl.message}</p>
+                )}
+              </div>
               
+              {/* Password Field with Toggle */}
               <div>
                 <div className="relative flex items-center">
                   <div className="absolute left-3 text-gray-500">
                     <RiLockPasswordLine className="w-5 h-5" />
                   </div>
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     className={`w-full px-10 py-3 rounded-lg border ${errors.password ? 'border-red-300 bg-red-50' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-gray-700`}
                     placeholder="Password"
                     {...register("password", { 
@@ -175,30 +202,24 @@ const Register = () => {
                       }
                     })}
                   />
+                  <button 
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute right-3 text-gray-500 hover:text-gray-700 focus:outline-none"
+                    tabIndex="-1"
+                  >
+                    {showPassword ? 
+                      <FaEyeSlash className="w-5 h-5" /> : 
+                      <FaEye className="w-5 h-5" />
+                    }
+                  </button>
                 </div>
                 {errors.password && (
                   <p className="text-red-500 text-xs mt-1 ml-1">{errors.password.message}</p>
                 )}
-              </div>
-              
-              <div>
-                <div className="relative flex items-center">
-                  <div className="absolute left-3 text-gray-500">
-                    <RiLockPasswordLine className="w-5 h-5" />
-                  </div>
-                  <input
-                    type="password"
-                    className={`w-full px-10 py-3 rounded-lg border ${errors.confirmPassword ? 'border-red-300 bg-red-50' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-gray-700`}
-                    placeholder="Confirm Password"
-                    {...register("confirmPassword", { 
-                      required: "Please confirm your password",
-                      validate: value => value === password || "Passwords do not match"
-                    })}
-                  />
-                </div>
-                {errors.confirmPassword && (
-                  <p className="text-red-500 text-xs mt-1 ml-1">{errors.confirmPassword.message}</p>
-                )}
+                <p className="text-gray-500 text-xs mt-1 ml-1">
+                  Password must contain at least 6 characters, including uppercase, lowercase, number and special character.
+                </p>
               </div>
               
               <div className="flex items-center mt-2">
