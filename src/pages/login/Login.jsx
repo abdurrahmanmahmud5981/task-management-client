@@ -12,6 +12,7 @@ import { FcGoogle } from "react-icons/fc";
 import { HiOutlineMail } from "react-icons/hi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegUser } from "react-icons/fa";
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
@@ -23,6 +24,7 @@ const Login = () => {
   const from = location.pathname || "/";
   const [isLoading, setIsLoading] = useState(false);
   const [authError, setAuthError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -35,15 +37,20 @@ const Login = () => {
     },
   });
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const onSubmit = async (data) => {
     setIsLoading(true);
     setAuthError("");
 
     try {
       // This would be replaced with your actual Firebase authentication
-      // await signInWithEmailAndPassword(auth, data.email, data.password);
+      await signIn(data.email, data.password);
       console.log("Signed in with email:", data.email);
       setIsLoading(false);
+      navigate('/');
       // onSignIn?.();
     } catch (err) {
       setAuthError("Failed to sign in. Please check your credentials.");
@@ -56,9 +63,7 @@ const Login = () => {
     setAuthError("");
 
     try {
-      // This would be replaced with your actual Firebase authentication
-      // await signInWithPopup(auth, googleProvider);
-      console.log("Signed in with Google");
+     
       const user = await signInWithGoogle();
       console.log(user);
       setIsLoading(false);
@@ -159,7 +164,7 @@ const Login = () => {
                     <RiLockPasswordLine className="w-5 h-5" />
                   </div>
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     className={`w-full px-10 py-3 rounded-lg border ${
                       errors.password
                         ? "border-red-300 bg-red-50"
@@ -174,6 +179,18 @@ const Login = () => {
                       },
                     })}
                   />
+                  <button
+                    type="button"
+                    className="absolute right-3 text-gray-500 hover:text-gray-700 focus:outline-none"
+                    onClick={togglePasswordVisibility}
+                    tabIndex="-1"
+                  >
+                    {showPassword ? (
+                      <IoEyeOffOutline className="w-5 h-5" />
+                    ) : (
+                      <IoEyeOutline className="w-5 h-5" />
+                    )}
+                  </button>
                 </div>
                 {errors.password && (
                   <p className="text-red-500 text-xs mt-1 ml-1">

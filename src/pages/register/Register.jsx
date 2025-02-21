@@ -165,7 +165,7 @@ const Register = () => {
                   <input
                     type="url"
                     className={`w-full px-10 py-3 rounded-lg border ${errors.profileImageUrl ? 'border-red-300 bg-red-50' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-gray-700`}
-                    placeholder="Profile Image URL (optional)"
+                    placeholder="Profile Image URL"
                     {...register("profileImageUrl", { 
                       required: "Profile Image is required",
                       pattern: {
