@@ -13,8 +13,12 @@ import { HiOutlineMail } from 'react-icons/hi';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import { FaRegUser } from 'react-icons/fa';
 import { BsPersonPlus } from 'react-icons/bs';
+import { Link, useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 
 const Register = () => {
+  const { signInWithGoogle, signIn } = useAuth();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [authError, setAuthError] = useState('');
   
@@ -59,8 +63,11 @@ const Register = () => {
       // This would be replaced with your actual Firebase authentication
       // await signInWithPopup(auth, googleProvider);
       console.log("Registered with Google");
+      const user = await signInWithGoogle();
+      console.log(user);
       setIsLoading(false);
       // Navigate to dashboard or home page
+      navigate('/');
     } catch (err) {
       setAuthError('Failed to register with Google.');
       setIsLoading(false);
@@ -248,9 +255,9 @@ const Register = () => {
           <CardFooter className="pt-0 px-8 pb-8">
             <Typography variant="small" className="mt-4 text-center font-normal text-gray-600">
               Already have an account?{" "}
-              <a href="/login" className="font-medium text-blue-600 transition-colors hover:text-blue-800">
+              <Link to="/login" className="font-medium text-blue-600 transition-colors hover:text-blue-800">
                 Sign in
-              </a>
+              </Link>
             </Typography>
           </CardFooter>
         </Card>

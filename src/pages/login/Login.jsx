@@ -12,7 +12,7 @@ import { FcGoogle } from "react-icons/fc";
 import { HiOutlineMail } from "react-icons/hi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegUser } from "react-icons/fa";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
@@ -263,12 +263,12 @@ const Login = () => {
               className="mt-4 text-center font-normal text-gray-600"
             >
               Don&apos;t have an account?{" "}
-              <a
-                href="#signup"
+              <Link
+                to="/register"
                 className="font-medium text-blue-600 transition-colors hover:text-blue-800"
               >
                 Create an account
-              </a>
+              </Link>
             </Typography>
           </CardFooter>
         </Card>
