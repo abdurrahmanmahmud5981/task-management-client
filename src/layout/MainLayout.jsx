@@ -53,7 +53,7 @@ const MainLayout = () => {
               to="/"
               className="mr-4 cursor-pointer py-1.5  text-blue-500 font-bold"
             >
-              Task Manager
+              Task Master
             </Link>
           </div>
 
@@ -87,7 +87,7 @@ const MainLayout = () => {
       <main className="mx-auto max-w-screen-xl px-4 py-8">
         <div className="rounded-xl bg-white p-6 shadow-sm">
         <Typography type="h4" className="text-gray-800 text-center">
-          Task Management
+          Task Master
         </Typography>
           <div className="mb-8">
             <Typography variant="h4" color="blue-gray" className="font-semibold">
