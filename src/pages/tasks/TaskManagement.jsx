@@ -71,7 +71,6 @@ const TaskManagement = () => {
   };
 
   const onSubmit = (data) => {
-    console.log(data);
     if (editingTask) {
       // Update existing task
       const updatedTasks = { ...tasks };
@@ -97,8 +96,7 @@ const TaskManagement = () => {
         timestamp: new Date().toISOString(),
         category: "To-Do",
       };
-      console.log(newTask);
-      console.log(tasks);
+
       setTasks((prev) => ({
         ...prev,
         "To-Do": [...prev["To-Do"], newTask],
@@ -124,9 +122,9 @@ const TaskManagement = () => {
           as={Button}
           title="Add New Task"
           // onClick={()=> setOpen(true)}
-          onClick={() => handleOpen()}
+          // onClick={() => handleOpen()}
         >
-          <FaPlus /> <span className="hidden lg:block">Add New Task</span>
+          <FaPlus /> <span className="hidden sm:block">Add New Task</span>
         </Dialog.Trigger>
       </div>
       {/* task modal */}
@@ -198,13 +196,12 @@ const TaskManagement = () => {
                   Cancel
                 </Dialog.DismissTrigger>
 
-               <Button
-                    type="submit"
-                    className="cursor-pointer  border-none px-4 text-white  flex items-center gap-2 bg-blue-500 hover:bg-blue-600"
-                  >
-                    {editingTask ? "Update Task" : "Create Task"}
-                  </Button>
-              
+                <Button
+                  type="submit"
+                  className="cursor-pointer  border-none px-4 text-white  flex items-center gap-2 bg-blue-500 hover:bg-blue-600"
+                >
+                  {editingTask ? "Update Task" : "Create Task"}
+                </Button>
               </div>
             </form>
           </Dialog.Content>

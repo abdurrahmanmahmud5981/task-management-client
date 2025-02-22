@@ -72,7 +72,6 @@ const Register = () => {
     setAuthError('');
     
     try {
-      console.log("Registered with Google");
       const user = await signInWithGoogle();
       await saveUser(user?.user)
       navigate('/');

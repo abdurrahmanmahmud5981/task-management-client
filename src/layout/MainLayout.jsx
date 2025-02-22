@@ -1,12 +1,12 @@
 import { Link, Navigate, Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import AllTasks from "../pages/tasks/AllTasks";
-import { 
-  Navbar, 
-  Typography, 
-  Avatar, 
+import {
+  Navbar,
+  Typography,
+  Avatar,
   Button,
-  IconButton
+  IconButton,
 } from "@material-tailwind/react";
 import { FaSignOutAlt, FaTasks } from "react-icons/fa";
 
@@ -35,7 +35,7 @@ const MainLayout = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar 
+      <Navbar
         className="sticky top-0 z-10 h-max max-w-full rounded-none border-none px-4 py-2 shadow-md"
         color="white"
       >
@@ -49,7 +49,6 @@ const MainLayout = () => {
               <FaTasks className="h-5 w-5" />
             </IconButton>
             <Link
-            
               to="/"
               className="mr-4 cursor-pointer py-1.5  text-blue-500 font-bold"
             >
@@ -63,7 +62,10 @@ const MainLayout = () => {
                 size="sm"
                 variant="circular"
                 className="cursor-pointer border-2 border-blue-500"
-                src={user.photoURL || "https://docs.material-tailwind.com/img/face-2.jpg"}
+                src={
+                  user.photoURL ||
+                  "https://docs.material-tailwind.com/img/face-2.jpg"
+                }
                 alt="avatar"
               />
               <div className="hidden lg:block">
@@ -86,11 +88,13 @@ const MainLayout = () => {
 
       <main className="mx-auto max-w-screen-xl px-4 py-8">
         <div className="rounded-xl bg-white p-6 shadow-sm">
-        <Typography type="h4" className="text-gray-800 text-center">
-          Task Master
-        </Typography>
+         
           <div className="mb-8">
-            <Typography variant="h4" color="blue-gray" className="font-semibold">
+            <Typography
+              variant="h4"
+              color="blue-gray"
+              className="font-semibold"
+            >
               Welcome back, {user.displayName || "User"}!
             </Typography>
             <Typography variant="paragraph" color="gray" className="mt-1">

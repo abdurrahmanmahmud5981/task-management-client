@@ -21,7 +21,6 @@ const Login = () => {
   const { signInWithGoogle, signIn } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location.pathname);
   const from = location.pathname || "/";
   const [isLoading, setIsLoading] = useState(false);
   const [authError, setAuthError] = useState("");
@@ -49,11 +48,11 @@ const Login = () => {
     try {
       // This would be replaced with your actual Firebase authentication
       const user = await signIn(data.email, data.password);
-      console.log("Signed in with email:", data.email);
       setIsLoading(false);
       await saveUser(user?.user);
       navigate(from);
       // onSignIn?.();
+    // eslint-disable-next-line no-unused-vars
     } catch (err) {
       setAuthError("Failed to sign in. Please check your credentials.");
       setIsLoading(false);
@@ -74,6 +73,7 @@ const Login = () => {
         navigate(from || "/");
       // onSignIn?.();
       navigate('/');
+    // eslint-disable-next-line no-unused-vars
     } catch (err) {
       setAuthError("Failed to sign in with Google.");
       setIsLoading(false);
