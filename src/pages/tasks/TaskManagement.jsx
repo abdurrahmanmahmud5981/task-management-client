@@ -7,11 +7,12 @@ import {
   Textarea,
   Typography,
   IconButton,
-  Badge,
+ 
   Chip,
 } from "@material-tailwind/react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { MdCancel, MdEdit, MdDelete } from "react-icons/md";
+import { FaPlus } from "react-icons/fa";
 
 const TaskManagement = () => {
   const [tasks, setTasks] = useState({
@@ -105,8 +106,8 @@ const TaskManagement = () => {
     }));
     // }
 
-    // handleOpen();
-    // reset();
+    handleOpen();
+    reset();
   };
 
   const deleteTask = (categoryId, taskId) => {
@@ -123,10 +124,11 @@ const TaskManagement = () => {
           Task Management
         </Typography>
         <Dialog.Trigger
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600"
+          className="cursor-pointer  border-none px-4 text-white  flex items-center gap-2 bg-blue-500 hover:bg-blue-600"
           as={Button}
+          title="Add New Task"
         >
-          Add New Task
+        <FaPlus />  <span className="hidden lg:block">Add New Task</span>
         </Dialog.Trigger>
       </div>
     {/* task modal */}
@@ -190,12 +192,12 @@ const TaskManagement = () => {
               </div>
 
               <div className="flex justify-end gap-3">
-                <Dialog.DismissTrigger as={Button} color="secondary">
+                <Dialog.DismissTrigger as={Button} color="secondary" className="cursor-pointer">
                   Cancel
                 </Dialog.DismissTrigger>
 
-                <Button type="submit" className="bg-blue-500 hover:bg-blue-600">
-                  {/* {editingTask ? "Update Task" : "Create Task"} */}
+                <Button type="submit" className="cursor-pointer  border-none px-4 text-white  flex items-center gap-2 bg-blue-500 hover:bg-blue-600">
+                  {editingTask ? "Update Task" : "Create Task"}
                 </Button>
               </div>
             </form>
@@ -204,7 +206,7 @@ const TaskManagement = () => {
       </div>
 {/* drag task  */}
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {Object.entries(tasks).map(([category, categoryTasks]) => (
             <div key={category} className="bg-white rounded-xl shadow-md p-4">
               <div className="flex items-center justify-between mb-4">
@@ -213,7 +215,7 @@ const TaskManagement = () => {
                 </Typography>
 
                 <Chip
-                  className="w-8 h-8 flex justify-center text-green-400 font-bold text-lg"
+                  className="w-8 h-8 flex justify-center text-blue-400 font-bold text-lg ring"
                   size="sm"
                 >
                   <Chip.Label>{categoryTasks.length}</Chip.Label>
@@ -268,6 +270,7 @@ const TaskManagement = () => {
                                   <IconButton
                                     // variant="text"
                                     // color="blue"
+                                    className="text-blue-500 cursor-pointer"
                                     size="sm"
                                     onClick={() => handleOpen(task)}
                                   >
@@ -276,6 +279,7 @@ const TaskManagement = () => {
                                   <IconButton
                                     // variant="text"
                                     // // color="red"
+                                    className="text-red-500 cursor-pointer"
                                     size="sm"
                                     onClick={() =>
                                       deleteTask(category, task.id)
