@@ -42,7 +42,7 @@ const MainLayout = () => {
         <div className="mx-auto flex max-w-screen-xl items-center justify-between">
           <div className="flex items-center gap-2">
             <IconButton
-              // variant="text"
+              as={Link}
               size="sm"
               className="  border-none px-4 text-blue-500  flex items-center gap-2 border-blue-500"
             >
@@ -86,6 +86,9 @@ const MainLayout = () => {
 
       <main className="mx-auto max-w-screen-xl px-4 py-8">
         <div className="rounded-xl bg-white p-6 shadow-sm">
+        <Typography type="h4" className="text-gray-800 text-center">
+          Task Management
+        </Typography>
           <div className="mb-8">
             <Typography variant="h4" color="blue-gray" className="font-semibold">
               Welcome back, {user.displayName || "User"}!

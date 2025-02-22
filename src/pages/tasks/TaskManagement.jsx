@@ -7,7 +7,6 @@ import {
   Textarea,
   Typography,
   IconButton,
- 
   Chip,
 } from "@material-tailwind/react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
@@ -73,38 +72,38 @@ const TaskManagement = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    // if (editingTask) {
-    //   // Update existing task
-    //   const updatedTasks = { ...tasks };
-    //   const categoryTasks = updatedTasks[editingTask.category];
-    //   const taskIndex = categoryTasks.findIndex((t) => t.id === editingTask.id);
+    if (editingTask) {
+      // Update existing task
+      const updatedTasks = { ...tasks };
+      const categoryTasks = updatedTasks[editingTask.category];
+      const taskIndex = categoryTasks.findIndex((t) => t.id === editingTask.id);
 
-    //   if (taskIndex !== -1) {
-    //     categoryTasks[taskIndex] = {
-    //       ...editingTask,
-    //       title: data.title,
-    //       description: data.description,
-    //       updatedAt: new Date().toISOString(),
-    //     };
-    //   }
+      if (taskIndex !== -1) {
+        categoryTasks[taskIndex] = {
+          ...editingTask,
+          title: data.title,
+          description: data.description,
+          updatedAt: new Date().toISOString(),
+        };
+      }
 
-    //   setTasks(updatedTasks);
-    // } else {
-    // Create new task
-    const newTask = {
-      id: Date.now().toString(),
-      title: data.title,
-      description: data.description,
-      timestamp: new Date().toISOString(),
-      category: "To-Do",
-    };
-    console.log(newTask);
-    console.log(tasks);
-    setTasks((prev) => ({
-      ...prev,
-      "To-Do": [...prev["To-Do"], newTask],
-    }));
-    // }
+      setTasks(updatedTasks);
+    } else {
+      // Create new task
+      const newTask = {
+        id: Date.now().toString(),
+        title: data.title,
+        description: data.description,
+        timestamp: new Date().toISOString(),
+        category: "To-Do",
+      };
+      console.log(newTask);
+      console.log(tasks);
+      setTasks((prev) => ({
+        ...prev,
+        "To-Do": [...prev["To-Do"], newTask],
+      }));
+    }
 
     handleOpen();
     reset();
@@ -120,18 +119,17 @@ const TaskManagement = () => {
   return (
     <Dialog size="md" className="p-6">
       <div className="flex justify-between items-center mb-8">
-        <Typography type="h4" className="text-gray-800">
-          Task Management
-        </Typography>
         <Dialog.Trigger
           className="cursor-pointer  border-none px-4 text-white  flex items-center gap-2 bg-blue-500 hover:bg-blue-600"
           as={Button}
           title="Add New Task"
+          // onClick={()=> setOpen(true)}
+          onClick={() => handleOpen()}
         >
-        <FaPlus />  <span className="hidden lg:block">Add New Task</span>
+          <FaPlus /> <span className="hidden lg:block">Add New Task</span>
         </Dialog.Trigger>
       </div>
-    {/* task modal */}
+      {/* task modal */}
       <div>
         <Dialog.Overlay className="fixed inset-0 bg-black/50">
           <Dialog.Content className="bg-white rounded-xl shadow-xl max-w-md mx-auto mt-20 p-6">
@@ -192,19 +190,27 @@ const TaskManagement = () => {
               </div>
 
               <div className="flex justify-end gap-3">
-                <Dialog.DismissTrigger as={Button} color="secondary" className="cursor-pointer">
+                <Dialog.DismissTrigger
+                  as={Button}
+                  color="secondary"
+                  className="cursor-pointer"
+                >
                   Cancel
                 </Dialog.DismissTrigger>
 
-                <Button type="submit" className="cursor-pointer  border-none px-4 text-white  flex items-center gap-2 bg-blue-500 hover:bg-blue-600">
-                  {editingTask ? "Update Task" : "Create Task"}
-                </Button>
+               <Button
+                    type="submit"
+                    className="cursor-pointer  border-none px-4 text-white  flex items-center gap-2 bg-blue-500 hover:bg-blue-600"
+                  >
+                    {editingTask ? "Update Task" : "Create Task"}
+                  </Button>
+              
               </div>
             </form>
           </Dialog.Content>
         </Dialog.Overlay>
       </div>
-{/* drag task  */}
+      {/* drag task  */}
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {Object.entries(tasks).map(([category, categoryTasks]) => (
@@ -267,15 +273,17 @@ const TaskManagement = () => {
                                   </Typography>
                                 </div>
                                 <div className="flex gap-2">
-                                  <IconButton
-                                    // variant="text"
-                                    // color="blue"
-                                    className="text-blue-500 cursor-pointer"
-                                    size="sm"
-                                    onClick={() => handleOpen(task)}
-                                  >
-                                    <MdEdit className="h-4 w-4" />
-                                  </IconButton>
+                                  <Dialog.Trigger>
+                                    <IconButton
+                                      // variant="text"
+                                      // color="blue"
+                                      className="text-blue-500 cursor-pointer"
+                                      size="sm"
+                                      onClick={() => handleOpen(task)}
+                                    >
+                                      <MdEdit className="h-4 w-4" />
+                                    </IconButton>
+                                  </Dialog.Trigger>
                                   <IconButton
                                     // variant="text"
                                     // // color="red"
@@ -290,16 +298,13 @@ const TaskManagement = () => {
                                 </div>
                               </div>
                               <div className="flex items-center justify-between">
-                               
                                 <Chip
-                                 className={`${getCategoryColor(category)}`}
+                                  className={`${getCategoryColor(category)}`}
                                   size="sm"
                                 >
-                                  <Chip.Label >
-                                    {category}
-                                  </Chip.Label>
+                                  <Chip.Label>{category}</Chip.Label>
                                 </Chip>
-                                
+
                                 <Typography
                                   variant="small"
                                   className="text-gray-500"
