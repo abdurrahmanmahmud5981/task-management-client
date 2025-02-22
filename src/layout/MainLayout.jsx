@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import AllTasks from "../pages/tasks/AllTasks";
 
 const MainLayout = () => {
   const {loader,user , logOut} = useAuth();
@@ -10,11 +11,14 @@ const MainLayout = () => {
 
   if (user?.email) {
     return (
-      <div>
+      <div className="w-11/12  mx-auto my-2.5">
         hello {user.email}
         <Outlet />
         <br />
         <button onClick={logOut}>logout</button>
+        <div className="">
+         <AllTasks/>
+        </div>
       </div>
     );
   } else {
