@@ -16,6 +16,7 @@ import { BsPersonPlus } from 'react-icons/bs';
 import { MdAddAPhoto } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import { saveUser } from '../../api/saveUser';
 
 const Register = () => {
   const { signInWithGoogle, createUser, updateUserProfile } = useAuth();
@@ -28,7 +29,9 @@ const Register = () => {
     register, 
     handleSubmit, 
     watch,
-    formState: { errors } 
+    formState: { errors } ,
+    reset
+
   } = useForm({
     defaultValues: {
       fullName: '',
@@ -50,11 +53,14 @@ const Register = () => {
     setAuthError('');
     
     try {
-      await createUser(data.email, data.password);
-      await updateUserProfile(data.fullName, data.profileImageUrl);
-      console.log("Registered with email:", data.email, "name:", data.fullName, "profile image:", data.profileImageUrl);
-      setIsLoading(false);
-      navigate('/');
+     const user = await createUser(data?.email, data?.password);
+      await updateUserProfile(data?.fullName, data?.profileImageUrl);
+    //  save uer to database
+    await saveUser(user?.user)
+
+    setIsLoading(false);
+    navigate('/');
+     
     } catch (err) {
       setAuthError('Failed to register. This email may already be in use.');
       setIsLoading(false);
@@ -68,11 +74,12 @@ const Register = () => {
     try {
       console.log("Registered with Google");
       const user = await signInWithGoogle();
-      console.log(user);
-      setIsLoading(false);
+      await saveUser(user?.user)
       navigate('/');
     } catch (err) {
       setAuthError('Failed to register with Google.');
+    }
+    finally{
       setIsLoading(false);
     }
   };

@@ -4,6 +4,7 @@ import auth from '../firebase/firebase.config';
 
 import axios from "axios";
 import AuthContext from "./AuthContext";
+
 // eslint-disable-next-line react/prop-types
 const AuthProvider = ({ children }) => {
   const googleProvider = new GoogleAuthProvider();
@@ -49,6 +50,9 @@ const AuthProvider = ({ children }) => {
           },
           { withCredentials: true }
         );
+        // console.log(currentUser);
+        // save user to the database
+        // await saveUser(currentUser, )
       } else {
         await axios.post(
           `${import.meta.env.VITE_API_URL}/logout`,

@@ -15,6 +15,7 @@ import { FaRegUser } from "react-icons/fa";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import { saveUser } from "../../api/saveUser";
 
 const Login = () => {
   const { signInWithGoogle, signIn } = useAuth();
@@ -47,10 +48,11 @@ const Login = () => {
 
     try {
       // This would be replaced with your actual Firebase authentication
-      await signIn(data.email, data.password);
+      const user = await signIn(data.email, data.password);
       console.log("Signed in with email:", data.email);
       setIsLoading(false);
-      navigate('/');
+      await saveUser(user?.user);
+      navigate(from);
       // onSignIn?.();
     } catch (err) {
       setAuthError("Failed to sign in. Please check your credentials.");
@@ -65,8 +67,11 @@ const Login = () => {
     try {
      
       const user = await signInWithGoogle();
-      console.log(user);
+    
       setIsLoading(false);
+        // save user information in the database if he is new
+        await saveUser(user?.user);
+        navigate(from || "/");
       // onSignIn?.();
       navigate('/');
     } catch (err) {
